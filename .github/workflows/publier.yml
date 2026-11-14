@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  SITE_URL: https://europasoft-eu.github.io/craft/
+  SITE_URL: https://europasoft-eu.github.io/ArtCraftOnlineNotOfficial/
 
 jobs:
   verifier:
