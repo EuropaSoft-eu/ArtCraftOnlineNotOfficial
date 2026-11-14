@@ -288,12 +288,15 @@ def main():
                 f'<span class="desc" style="display:block">{html.escape(app["desc"])}</span>'
                 f'<span class="ver" style="display:block">version {html.escape(versions[app["slug"]])}</span></span></a>')
         cards.append("  </div>")
-    today = datetime.date.today().strftime("%d/%m/%Y")
+    # Date et heure de publication, à l'heure de Paris (les serveurs de build sont en UTC)
+    from zoneinfo import ZoneInfo
+    now = datetime.datetime.now(ZoneInfo("Europe/Paris"))
+    today = now.strftime("%d/%m/%Y à %Hh%M")
     page = open(os.path.join(ROOT, "template", "index.html"), encoding="utf-8").read()
-    page = page.replace("{{CARDS}}", "\n".join(cards)).replace("{{DATE}}", today)
+    page = page.replace("{{CARDS}}", "\n".join(cards)).replace("{{DATE}}", today).replace("{{DATE_ISO}}", now.isoformat(timespec="minutes"))
     with open(os.path.join(out, "index.html"), "w", encoding="utf-8") as f:
         f.write(page)
-    write_pwa(out, "Craft Apps Online", "Craft Apps", "#1D4ED8", "CA", f"craft-home@{today}", sw_template, root_only=True)
+    write_pwa(out, "Craft Apps Online", "Craft Apps", "#1D4ED8", "CA", f"craft-home@{now:%Y%m%d-%H%M}", sw_template, root_only=True)
     with open(os.path.join(out, "icon.svg"), "w") as f:
         f.write(home_icon_svg())
     for size in (192, 512):
