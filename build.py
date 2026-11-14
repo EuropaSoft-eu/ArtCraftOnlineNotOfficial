@@ -296,9 +296,11 @@ def main():
     page = page.replace("{{CARDS}}", "\n".join(cards)).replace("{{DATE}}", today).replace("{{DATE_ISO}}", now.isoformat(timespec="minutes"))
     with open(os.path.join(out, "index.html"), "w", encoding="utf-8") as f:
         f.write(page)
-    write_pwa(out, "Craft Apps Online", "Craft Apps", "#1D4ED8", "CA", f"craft-home@{now:%Y%m%d-%H%M}", sw_template, root_only=True)
+    write_pwa(out, "ArtCraft Apps Online", "ArtCraft Apps", "#1D4ED8", "CA", f"craft-home@{now:%Y%m%d-%H%M}", sw_template, root_only=True)
     with open(os.path.join(out, "icon.svg"), "w") as f:
         f.write(home_icon_svg())
+    for logo in ("europasoft-logo.webp", "europasoft-logo-sombre.webp"):  # signature « par EuropaSoft »
+        shutil.copy(os.path.join(ROOT, "template", logo), out)
     for size in (192, 512):
         home_icon_png(size, os.path.join(out, f"icon-{size}.png"))
     with open(os.path.join(out, "versions.json"), "w") as f:

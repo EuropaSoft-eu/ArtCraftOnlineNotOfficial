@@ -1,4 +1,4 @@
-# Craft Apps Online
+# ArtCraft Apps Online, par EuropaSoft
 
 **https://europasoft-eu.github.io/craft/**
 
