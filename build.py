@@ -19,6 +19,7 @@ import subprocess
 import sys
 import tempfile
 import zipfile
+from zoneinfo import ZoneInfo
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -205,40 +206,13 @@ def inject_pwa(index_path, color):
     return True
 
 
-def check(apps, site_url):
-    """Compare les versions publiées sur le site avec les dernières versions officielles.
-    Affiche « changed=true » ou « changed=false » (format GITHUB_OUTPUT)."""
-    import urllib.request
-    try:
-        with urllib.request.urlopen(f"{site_url.rstrip('/')}/versions.json", timeout=30) as r:
-            live = json.load(r)
-    except Exception as error:  # site pas encore publié ou injoignable : on reconstruit
-        print(f"Site injoignable ({error}) : reconstruction.", file=sys.stderr)
-        live = {}
-    changed = False
-    listed = {a["slug"] for a in apps}
-    if set(live) != listed:
-        changed = True
-    for app in apps:
-        tag = subprocess.check_output(["gh", "release", "view", "-R", f"storytold/{app['repo']}",
-                                       "--json", "tagName", "-q", ".tagName"], text=True).strip().lstrip("v")
-        if live.get(app["slug"]) != tag:
-            print(f"{app['name']} : {live.get(app['slug'], 'absent')} → {tag}", file=sys.stderr)
-            changed = True
-    print(f"changed={'true' if changed else 'false'}")
-
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", default="_site")
     parser.add_argument("--zips", help="dossier de zips déjà téléchargés (test local)")
-    parser.add_argument("--check", metavar="URL_DU_SITE", help="vérifier seulement si une app a une nouvelle version")
     args = parser.parse_args()
 
     apps = json.load(open(os.path.join(ROOT, "apps.json"), encoding="utf-8"))
-    if args.check:
-        check(apps, args.check)
-        return
     sw_template = open(os.path.join(ROOT, "template", "sw.js"), encoding="utf-8").read()
     out = os.path.abspath(args.out)
     shutil.rmtree(out, ignore_errors=True)
@@ -289,8 +263,9 @@ def main():
                 f'<span class="ver" style="display:block">version {html.escape(versions[app["slug"]])}</span></span></a>')
         cards.append("  </div>")
     today = datetime.date.today().strftime("%d/%m/%Y")
+    checked = datetime.datetime.now(ZoneInfo("Europe/Paris")).strftime("%d/%m/%Y à %H:%M")
     page = open(os.path.join(ROOT, "template", "index.html"), encoding="utf-8").read()
-    page = page.replace("{{CARDS}}", "\n".join(cards)).replace("{{DATE}}", today)
+    page = page.replace("{{CARDS}}", "\n".join(cards)).replace("{{CHECK}}", checked)
     with open(os.path.join(out, "index.html"), "w", encoding="utf-8") as f:
         f.write(page)
     write_pwa(out, "Craft Apps Online", "Craft Apps", "#1D4ED8", "CA", f"craft-home@{today}", sw_template, root_only=True)
