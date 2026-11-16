@@ -24,6 +24,7 @@ Mémoire du projet : à lire avant de reprendre le travail, à compléter après
 
 | Date | Version | Changement |
 |---|---|---|
+| 2026-11-16 | 1.7 | Pied de page : phrase « vérifiées toutes les 3 heures — dernière mise à jour du site » supprimée ; la date ne figure plus qu'à côté du titre. |
 | 2026-11-14 | 1.6 | Nom « ArtCraft Apps Online », signature « par EuropaSoft » avec logo (fichiers `template/europasoft-logo*.webp`, repris du dépôt `EuropaSoft_SiteWeb_Prod`). |
 | 2026-11-14 | 1.5 | Date et heure de dernière mise à jour (heure de Paris) à côté du titre ; cache de l'accueil renouvelé à chaque publication. |
 | 2026-10-29 | 1.4 | Nom « Craft Apps Online », avertissement site non officiel. |
