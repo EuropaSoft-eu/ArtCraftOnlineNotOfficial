@@ -1,13 +1,21 @@
 {
   "appName": "ArtCraft Apps Online",
-  "version": "1.6",
+  "version": "1.7",
   "company": "EuropaSoft",
   "developer": "Yoann CRAMATTE",
   "website": "https://europasoft-eu.github.io/ArtCraftOnlineNotOfficial/",
   "contact": "contact@europasoft.eu",
   "copyright": "© 2026 EuropaSoft pour la page d'accueil et l'emballage — Craft Apps et leurs icônes © ArtCraft / storytold (Apache 2.0, MIT)",
-  "description": "Les 13 Crafting Apps open source d'ArtCraft utilisables dans le navigateur, sans installation, installables en PWA, alignées automatiquement sur les versions officielles (vérification toutes les 3 heures).",
+  "description": "Les 13 Crafting Apps open source d'ArtCraft utilisables dans le navigateur, sans installation, installables en PWA, alignées automatiquement sur les versions officielles (vérification toutes les 3 heures, date de la dernière vérification affichée).",
   "changelog": [
+    {
+      "version": "1.7",
+      "date": "2026-11-17",
+      "changes": [
+        "Date et heure affichées : dernière vérification des versions officielles (et non plus seulement la dernière publication)",
+        "Chaque passage de 3 heures reconstruit et republie le site, même sans nouvelle version, pour que cette date reste à jour"
+      ]
+    },
     {
       "version": "1.6",
       "date": "2026-11-14",
