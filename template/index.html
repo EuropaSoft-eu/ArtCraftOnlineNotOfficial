@@ -55,7 +55,7 @@
 </head>
 <body>
 <main>
-  <h1>ArtCraft Apps Online <time class="maj" datetime="{{DATE_ISO}}">mis à jour le {{DATE}}</time></h1>
+  <h1>ArtCraft Apps Online <span class="maj"><time datetime="{{DATE_ISO}}">mis à jour le {{DATE}}</time><span id="verif" hidden> · vérifié le <time></time></span></span></h1>
   <p class="by">par <a href="https://europasoft.eu/"><picture><source srcset="./europasoft-logo-sombre.webp" media="(prefers-color-scheme: dark)"><img src="./europasoft-logo.webp" width="640" height="192" alt="EuropaSoft"></picture></a></p>
   <p class="lead">Logiciels open source d'ArtCraft, à utiliser directement dans le navigateur, sans installation. Les fichiers ouverts restent dans votre navigateur : rien n'est envoyé sur un serveur.</p>
   <p class="unofficial"><strong>Site non officiel.</strong> Ces logiciels sont l'œuvre de l'équipe d'<a href="https://getartcraft.com">ArtCraft</a>, que nous remercions chaleureusement pour son travail et pour le choix de le partager en open source. Ce site est édité par EuropaSoft, sans lien avec ArtCraft : il lance simplement leurs versions officielles dans le navigateur, pour les postes et appareils où l'installation classique n'est pas possible. Si vous pouvez installer des logiciels, préférez les versions de bureau sur <a href="https://getartcraft.com">getartcraft.com</a>.</p>
@@ -75,11 +75,31 @@
     <p>Ce site n'a rien créé de ces outils : c'est seulement une interface pour lancer leurs versions officielles dans un navigateur, sans installation. Pour suivre le projet, signaler un problème ou soutenir l'auteur, rendez-vous sur <a href="https://getartcraft.com">getartcraft.com</a> et sur les dépôts GitHub de chaque application.</p>
   </section>
   <footer>
-    Logiciels et icônes © ArtCraft / storytold, licences Apache 2.0 et MIT. Versions officielles republiées sans modification, hors ajout du mode PWA. Versions officielles vérifiées toutes les 3 heures — dernière mise à jour du site : {{DATE}}.
+    Logiciels et icônes © ArtCraft / storytold, licences Apache 2.0 et MIT. Versions officielles republiées sans modification, hors ajout du mode PWA. Versions officielles vérifiées toutes les 3 heures — dernière mise à jour du site : {{DATE}}<span id="verif-pied" hidden>, dernière vérification : <time></time></span>.
   </footer>
 </main>
 <script>
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js");
+  // Dernière vérification des versions officielles : dernier passage réussi du workflow de publication
+  // (toutes les 3 heures, même quand aucune app n'a changé et que le site n'est pas republié).
+  fetch("https://api.github.com/repos/EuropaSoft-eu/ArtCraftOnlineNotOfficial/actions/workflows/publier.yml/runs?status=success&per_page=1",
+        { headers: { Accept: "application/vnd.github+json" } })
+    .then((r) => r.ok ? r.json() : Promise.reject(r.status))
+    .then((data) => {
+      const run = data.workflow_runs && data.workflow_runs[0];
+      if (!run) return;
+      const when = new Date(run.updated_at);
+      const opts = { timeZone: "Europe/Paris" };
+      const text = when.toLocaleDateString("fr-FR", { ...opts, day: "2-digit", month: "2-digit", year: "numeric" })
+        + " à " + when.toLocaleTimeString("fr-FR", { ...opts, hour: "2-digit", minute: "2-digit" }).replace(":", "h");
+      for (const id of ["verif", "verif-pied"]) {
+        const el = document.getElementById(id);
+        el.querySelector("time").dateTime = run.updated_at;
+        el.querySelector("time").textContent = text;
+        el.hidden = false;
+      }
+    })
+    .catch(() => {});
 </script>
 </body>
 </html>
