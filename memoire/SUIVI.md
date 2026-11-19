@@ -7,7 +7,8 @@ Mémoire du projet : à lire avant de reprendre le travail, à compléter après
 - Le dépôt ne contient pas les apps. `build.py` télécharge la dernière release web de chaque dépôt `storytold/<app>` (liste dans `apps.json`) et génère le site.
 - `.github/workflows/publier.yml` publie sur GitHub Pages depuis `main` : à chaque push, à la main, et toutes les 3 heures si une app a changé (`build.py --check` compare `versions.json` du site aux releases).
 - Les tâches planifiées GitHub sont irrégulières : écarts constatés de 4 à 13 heures entre deux vérifications.
-- Page d'accueil : `template/index.html` (jetons `{{CARDS}}`, `{{DATE}}`, `{{DATE_ISO}}`). Service worker : `template/sw.js`.
+- Page d'accueil : `template/index.html` (jetons `{{CARDS}}`, `{{DATE}}`, `{{DATE_ISO}}`, `{{REPO}}`).
+- « Vérifié le … » : le site n'étant republié que si une app change, la page lit au chargement la dernière exécution réussie de `publier.yml` via l'API GitHub publique (`{{REPO}}` = `GITHUB_REPOSITORY`). Si l'API ne répond pas (limite de 60 requêtes/heure par IP), la mention reste masquée. Service worker : `template/sw.js`.
 - Version et journal des changements du site : `AppInfo.json`.
 
 ## Adresses
@@ -24,6 +25,7 @@ Mémoire du projet : à lire avant de reprendre le travail, à compléter après
 
 | Date | Version | Changement |
 |---|---|---|
+| 2026-11-19 | 1.7 | Date et heure de dernière vérification (heure de Paris) à côté du titre et en pied de page. Vérification manuelle : les 13 apps en ligne sont aux dernières versions officielles. |
 | 2026-11-14 | 1.6 | Nom « ArtCraft Apps Online », signature « par EuropaSoft » avec logo (fichiers `template/europasoft-logo*.webp`, repris du dépôt `EuropaSoft_SiteWeb_Prod`). |
 | 2026-11-14 | 1.5 | Date et heure de dernière mise à jour (heure de Paris) à côté du titre ; cache de l'accueil renouvelé à chaque publication. |
 | 2026-10-29 | 1.4 | Nom « Craft Apps Online », avertissement site non officiel. |
