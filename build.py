@@ -294,6 +294,7 @@ def main():
     today = now.strftime("%d/%m/%Y à %Hh%M")
     page = open(os.path.join(ROOT, "template", "index.html"), encoding="utf-8").read()
     page = page.replace("{{CARDS}}", "\n".join(cards)).replace("{{DATE}}", today).replace("{{DATE_ISO}}", now.isoformat(timespec="minutes"))
+    page = page.replace("{{REPO}}", os.environ.get("GITHUB_REPOSITORY", "EuropaSoft-eu/ArtCraftOnlineNotOfficial"))
     with open(os.path.join(out, "index.html"), "w", encoding="utf-8") as f:
         f.write(page)
     write_pwa(out, "ArtCraft Apps Online", "ArtCraft Apps", "#1D4ED8", "CA", f"craft-home@{now:%Y%m%d-%H%M}", sw_template, root_only=True)

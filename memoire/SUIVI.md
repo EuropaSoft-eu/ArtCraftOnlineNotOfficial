@@ -7,7 +7,7 @@ Mémoire du projet : à lire avant de reprendre le travail, à compléter après
 - Le dépôt ne contient pas les apps. `build.py` télécharge la dernière release web de chaque dépôt `storytold/<app>` (liste dans `apps.json`) et génère le site.
 - `.github/workflows/publier.yml` publie sur GitHub Pages depuis `main` : à chaque push, à la main, et toutes les 3 heures si une app a changé (`build.py --check` compare `versions.json` du site aux releases).
 - Les tâches planifiées GitHub sont irrégulières : écarts constatés de 4 à 13 heures entre deux vérifications.
-- Page d'accueil : `template/index.html` (jetons `{{CARDS}}`, `{{DATE}}`, `{{DATE_ISO}}`). Service worker : `template/sw.js`.
+- Page d'accueil : `template/index.html` (jetons `{{CARDS}}`, `{{DATE}}`, `{{DATE_ISO}}`, `{{REPO}}`). Service worker : `template/sw.js`.
 - Version et journal des changements du site : `AppInfo.json`.
 
 ## Adresses
@@ -24,6 +24,7 @@ Mémoire du projet : à lire avant de reprendre le travail, à compléter après
 
 | Date | Version | Changement |
 |---|---|---|
+| 2026-11-20 | 1.9 | Heure de la dernière vérification affichée (JS : API GitHub, dernier run réussi de `publier.yml` ; jeton `{{REPO}}` rempli par `GITHUB_REPOSITORY`). Vérif. 12h13 : 15 apps à jour. |
 | 2026-11-20 | 1.8 | TextureCraft et MaterialCraft ajoutées (`apps.json`). |
 | 2026-11-20 | 1.7 | Texte à côté du titre : « Dernière mise à jour faite le … ». |
 | 2026-11-14 | 1.6 | Nom « ArtCraft Apps Online », signature « par EuropaSoft » avec logo (fichiers `template/europasoft-logo*.webp`, repris du dépôt `EuropaSoft_SiteWeb_Prod`). |
