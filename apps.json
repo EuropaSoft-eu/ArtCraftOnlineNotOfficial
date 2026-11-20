@@ -11,5 +11,7 @@
   {"slug": "film", "repo": "filmcraft", "name": "FilmCraft", "replaces": "Premiere Pro", "group": "Vidéo et son", "color": "#6D28D9", "desc": "Montage vidéo.", "abbr": "Fm"},
   {"slug": "effect", "repo": "effectcraft", "name": "EffectCraft", "replaces": "After Effects", "group": "Vidéo et son", "color": "#5B21B6", "desc": "Animation graphique et compositing.", "abbr": "Ef"},
   {"slug": "sound", "repo": "soundcraft", "name": "SoundCraft", "replaces": "Pro Tools", "group": "Vidéo et son", "color": "#0F766E", "desc": "Enregistrement et montage audio.", "abbr": "Sd"},
-  {"slug": "cad", "repo": "cadcraft", "name": "CADCraft", "replaces": "AutoCAD", "group": "Technique", "color": "#475569", "desc": "Dessin technique et plans 2D.", "abbr": "Cd"}
+  {"slug": "cad", "repo": "cadcraft", "name": "CADCraft", "replaces": "AutoCAD", "group": "Technique", "color": "#475569", "desc": "Dessin technique et plans 2D.", "abbr": "Cd"},
+  {"slug": "texture", "repo": "texturecraft", "name": "TextureCraft", "replaces": "Substance Painter", "group": "Image et design", "color": "#B45309", "desc": "Peinture de textures 3D.", "abbr": "Tx"},
+  {"slug": "material", "repo": "materialcraft", "name": "MaterialCraft", "replaces": "Substance Designer", "group": "Image et design", "color": "#0D9488", "desc": "Création de matériaux par nœuds.", "abbr": "Mt"}
 ]

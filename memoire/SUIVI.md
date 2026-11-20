@@ -24,6 +24,7 @@ Mémoire du projet : à lire avant de reprendre le travail, à compléter après
 
 | Date | Version | Changement |
 |---|---|---|
+| 2026-11-20 | 1.8 | TextureCraft et MaterialCraft ajoutées (`apps.json`). |
 | 2026-11-20 | 1.7 | Texte à côté du titre : « Dernière mise à jour faite le … ». |
 | 2026-11-14 | 1.6 | Nom « ArtCraft Apps Online », signature « par EuropaSoft » avec logo (fichiers `template/europasoft-logo*.webp`, repris du dépôt `EuropaSoft_SiteWeb_Prod`). |
 | 2026-11-14 | 1.5 | Date et heure de dernière mise à jour (heure de Paris) à côté du titre ; cache de l'accueil renouvelé à chaque publication. |
