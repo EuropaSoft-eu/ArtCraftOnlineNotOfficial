@@ -24,6 +24,7 @@ Mémoire du projet : à lire avant de reprendre le travail, à compléter après
 
 | Date | Version | Changement |
 |---|---|---|
+| 2026-11-22 | 1.10 | SolidCraft ajoutée (dépôt `tangency-labs/solidcraft`) ; `build.py` accepte un dépôt « propriétaire/nom ». |
 | 2026-11-22 | 1.9 | Craft Anything ajoutée (`apps.json`). |
 | 2026-11-20 | 1.8 | TextureCraft et MaterialCraft ajoutées (`apps.json`). |
 | 2026-11-20 | 1.7 | Texte à côté du titre : « Dernière mise à jour faite le … ». |

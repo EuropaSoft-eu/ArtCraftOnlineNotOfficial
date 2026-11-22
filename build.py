@@ -23,20 +23,26 @@ import zipfile
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
+def full_repo(repo):
+    """« owner/nom » ; sans owner, le dépôt est chez storytold."""
+    return repo if "/" in repo else f"storytold/{repo}"
+
+
 def latest_web_zip(repo, zips_dir, work):
-    """Renvoie (version, chemin du zip) pour la dernière release de storytold/<repo>."""
+    """Renvoie (version, chemin du zip) pour la dernière release du dépôt."""
+    name = repo.split("/")[-1]
     if zips_dir:
-        found = sorted(glob.glob(os.path.join(zips_dir, f"{repo}-web-*.zip")))
+        found = sorted(glob.glob(os.path.join(zips_dir, f"{name}-web-*.zip")))
         if not found:
             raise SystemExit(f"Zip introuvable pour {repo} dans {zips_dir}")
         path = found[-1]
         return re.search(r"-web-(.+)\.zip$", path).group(1), path
     info = json.loads(subprocess.check_output(
-        ["gh", "release", "view", "-R", f"storytold/{repo}", "--json", "tagName,assets"]))
+        ["gh", "release", "view", "-R", full_repo(repo), "--json", "tagName,assets"]))
     names = [a["name"] for a in info["assets"] if re.search(r"-web-.*\.zip$", a["name"])]
     if not names:
         raise SystemExit(f"Pas de version web pour {repo} ({info['tagName']})")
-    subprocess.check_call(["gh", "release", "download", info["tagName"], "-R", f"storytold/{repo}",
+    subprocess.check_call(["gh", "release", "download", info["tagName"], "-R", full_repo(repo),
                            "-p", names[0], "-D", work, "--clobber"])
     return info["tagName"].lstrip("v"), os.path.join(work, names[0])
 
@@ -44,12 +50,12 @@ def latest_web_zip(repo, zips_dir, work):
 def official_icon(repo, version, dest_png):
     """Télécharge l'icône officielle de l'app (512 px) depuis son dépôt, à la version publiée.
     Renvoie False si elle est introuvable : l'icône de secours est alors générée."""
-    path = f"assets/app-icon/hicolor/512x512/apps/ai.storyteller.{repo}.png"
+    path = f"assets/app-icon/hicolor/512x512/apps/ai.storyteller.{repo.split('/')[-1]}.png"
     for ref in (f"v{version}", version, "HEAD"):
         try:
             data = subprocess.check_output(
                 ["gh", "api", "-H", "Accept: application/vnd.github.raw",
-                 f"repos/storytold/{repo}/contents/{path}?ref={ref}"], stderr=subprocess.DEVNULL)
+                 f"repos/{full_repo(repo)}/contents/{path}?ref={ref}"], stderr=subprocess.DEVNULL)
         except subprocess.CalledProcessError:
             continue
         if data.startswith(b"\x89PNG"):
@@ -220,7 +226,7 @@ def check(apps, site_url):
     if set(live) != listed:
         changed = True
     for app in apps:
-        tag = subprocess.check_output(["gh", "release", "view", "-R", f"storytold/{app['repo']}",
+        tag = subprocess.check_output(["gh", "release", "view", "-R", full_repo(app['repo']),
                                        "--json", "tagName", "-q", ".tagName"], text=True).strip().lstrip("v")
         if live.get(app["slug"]) != tag:
             print(f"{app['name']} : {live.get(app['slug'], 'absent')} → {tag}", file=sys.stderr)
@@ -256,7 +262,7 @@ def main():
         app_dir, snippets = os.path.join(dest, "app"), os.path.join(dest, "snippets")
         if os.path.isdir(app_dir) and os.path.isdir(snippets) and not os.path.exists(os.path.join(app_dir, "snippets")):
             shutil.copytree(snippets, os.path.join(app_dir, "snippets"))
-        official = os.path.join(work, f"{app['repo']}-512.png")
+        official = os.path.join(work, f"{app['slug']}-512.png")
         if official_icon(app["repo"], version, official):
             resize_png(official, 96, os.path.join(out, "icons", f"{app['slug']}.png"))
             app["icon"] = f"./icons/{app['slug']}.png"

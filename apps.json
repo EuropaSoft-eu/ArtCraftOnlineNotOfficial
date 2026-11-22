@@ -14,5 +14,6 @@
   {"slug": "cad", "repo": "cadcraft", "name": "CADCraft", "replaces": "AutoCAD", "group": "Technique", "color": "#475569", "desc": "Dessin technique et plans 2D.", "abbr": "Cd"},
   {"slug": "texture", "repo": "texturecraft", "name": "TextureCraft", "replaces": "Substance Painter", "group": "Image et design", "color": "#B45309", "desc": "Peinture de textures 3D.", "abbr": "Tx"},
   {"slug": "material", "repo": "materialcraft", "name": "MaterialCraft", "replaces": "Substance Designer", "group": "Image et design", "color": "#0D9488", "desc": "Création de matériaux par nœuds.", "abbr": "Mt"},
-  {"slug": "anything", "repo": "craft-anything", "name": "Craft Anything", "replaces": "tout logiciel", "group": "Technique", "color": "#0369A1", "desc": "Comprendre comment fonctionne un logiciel, et en créer un.", "abbr": "An"}
+  {"slug": "anything", "repo": "craft-anything", "name": "Craft Anything", "replaces": "tout logiciel", "group": "Technique", "color": "#0369A1", "desc": "Comprendre comment fonctionne un logiciel, et en créer un.", "abbr": "An"},
+  {"slug": "solid", "repo": "tangency-labs/solidcraft", "name": "SolidCraft", "replaces": "SolidWorks", "group": "Technique", "color": "#0891B2", "desc": "CAO 3D paramétrique, pilotable par IA (MCP).", "abbr": "Sc"}
 ]
