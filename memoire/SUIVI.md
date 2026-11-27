@@ -7,6 +7,7 @@ Mémoire du projet : à lire avant de reprendre le travail, à compléter après
 - Le dépôt ne contient pas les apps. `build.py` télécharge la dernière release web de chaque dépôt `storytold/<app>` (liste dans `apps.json`) et génère le site.
 - `.github/workflows/publier.yml` publie sur GitHub Pages depuis `main` : à chaque push, à la main, et toutes les 3 heures si une app a changé (`build.py --check` compare `versions.json` du site aux releases).
 - Les tâches planifiées GitHub sont irrégulières : écarts constatés de 4 à 13 heures entre deux vérifications.
+- Le nom du dépôt est aussi en dur dans le script de `template/index.html` (date de dernière vérification).
 - Page d'accueil : `template/index.html` (jetons `{{CARDS}}`, `{{DATE}}`, `{{DATE_ISO}}`). Service worker : `template/sw.js`.
 - Version et journal des changements du site : `AppInfo.json`.
 
@@ -24,6 +25,7 @@ Mémoire du projet : à lire avant de reprendre le travail, à compléter après
 
 | Date | Version | Changement |
 |---|---|---|
+| 2026-11-27 | 1.11 | « Dernière vérification des versions le … » sous le titre et en pied de page : lue dans le navigateur via l'API GitHub (`actions/workflows/publier.yml/runs?status=success`), car la vérification planifiée ne republie pas si rien n'a changé ; à défaut, date de mise à jour. Vérif. manuelle : 17/17 apps à jour. |
 | 2026-11-22 | 1.10 | SolidCraft ajoutée (dépôt `tangency-labs/solidcraft`) ; `build.py` accepte un dépôt « propriétaire/nom ». |
 | 2026-11-22 | 1.9 | Craft Anything ajoutée (`apps.json`). |
 | 2026-11-20 | 1.8 | TextureCraft et MaterialCraft ajoutées (`apps.json`). |

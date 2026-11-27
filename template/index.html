@@ -22,6 +22,7 @@
   main { max-width: 1040px; margin: 0 auto; padding: 40px 16px 64px; }
   h1 { font-size: 1.9rem; margin: 0 0 6px; text-wrap: balance; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
   .maj { color: var(--muted); font-size: .8rem; font-weight: 400; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .dates { display: flex; flex-direction: column; }
   .by { display: flex; align-items: center; gap: 8px; margin: 0 0 14px; color: var(--muted); font-size: .9rem; }
   .by a { display: inline-flex; border-radius: 4px; }
   .by a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -55,7 +56,7 @@
 </head>
 <body>
 <main>
-  <h1>ArtCraft Apps Online <time class="maj" datetime="{{DATE_ISO}}">Dernière mise à jour faite le {{DATE}}</time></h1>
+  <h1>ArtCraft Apps Online <span class="dates"><time class="maj" datetime="{{DATE_ISO}}">Dernière mise à jour faite le {{DATE}}</time><time class="maj" id="verif" datetime="{{DATE_ISO}}">Dernière vérification des versions le {{DATE}}</time></span></h1>
   <p class="by">par <a href="https://europasoft.eu/"><picture><source srcset="./europasoft-logo-sombre.webp" media="(prefers-color-scheme: dark)"><img src="./europasoft-logo.webp" width="640" height="192" alt="EuropaSoft"></picture></a></p>
   <p class="lead">Logiciels open source d'ArtCraft, à utiliser directement dans le navigateur, sans installation. Les fichiers ouverts restent dans votre navigateur : rien n'est envoyé sur un serveur.</p>
   <p class="unofficial"><strong>Site non officiel.</strong> Ces logiciels sont l'œuvre de l'équipe d'<a href="https://getartcraft.com">ArtCraft</a>, que nous remercions chaleureusement pour son travail et pour le choix de le partager en open source. Ce site est édité par EuropaSoft, sans lien avec ArtCraft : il lance simplement leurs versions officielles dans le navigateur, pour les postes et appareils où l'installation classique n'est pas possible. Si vous pouvez installer des logiciels, préférez les versions de bureau sur <a href="https://getartcraft.com">getartcraft.com</a>.</p>
@@ -75,11 +76,31 @@
     <p>Ce site n'a rien créé de ces outils : c'est seulement une interface pour lancer leurs versions officielles dans un navigateur, sans installation. Pour suivre le projet, signaler un problème ou soutenir l'auteur, rendez-vous sur <a href="https://getartcraft.com">getartcraft.com</a> et sur les dépôts GitHub de chaque application.</p>
   </section>
   <footer>
-    Logiciels et icônes © ArtCraft / storytold, licences Apache 2.0 et MIT. Versions officielles republiées sans modification, hors ajout du mode PWA. Versions officielles vérifiées toutes les 3 heures — dernière mise à jour du site : {{DATE}}.
+    Logiciels et icônes © ArtCraft / storytold, licences Apache 2.0 et MIT. Versions officielles republiées sans modification, hors ajout du mode PWA. Versions officielles vérifiées toutes les 3 heures — dernière mise à jour du site : {{DATE}} ; dernière vérification : <span id="verif-pied">{{DATE}}</span>.
   </footer>
 </main>
 <script>
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js");
+  // Dernière vérification des versions : la vérification planifiée (toutes les 3 heures) ne republie le site
+  // que si une app a changé ; sa date est donc lue en direct sur GitHub (dernière exécution réussie de la publication).
+  // Sans réseau ou si GitHub ne répond pas, la date de la dernière mise à jour reste affichée.
+  (async () => {
+    try {
+      const r = await fetch("https://api.github.com/repos/EuropaSoft-eu/ArtCraftOnlineNotOfficial/actions/workflows/publier.yml/runs?status=success&per_page=1", { headers: { Accept: "application/vnd.github+json" } });
+      if (!r.ok) return;
+      const run = (await r.json()).workflow_runs?.[0];
+      if (!run) return;
+      const when = new Date(run.updated_at);
+      const el = document.getElementById("verif");
+      if (!(when > new Date(el.dateTime))) return;
+      const p = Object.fromEntries(new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", hourCycle: "h23" })
+        .formatToParts(when).map((x) => [x.type, x.value]));
+      const text = `${p.day}/${p.month}/${p.year} à ${p.hour}h${p.minute}`;
+      el.dateTime = when.toISOString();
+      el.textContent = `Dernière vérification des versions le ${text}`;
+      document.getElementById("verif-pied").textContent = text;
+    } catch (e) { /* hors connexion : on garde la date de mise à jour */ }
+  })();
 </script>
 </body>
 </html>
