@@ -24,6 +24,7 @@ Mémoire du projet : à lire avant de reprendre le travail, à compléter après
 
 | Date | Version | Changement |
 |---|---|---|
+| 2026-11-28 | 1.11 | « Dernière vérification le … » sous le titre et en pied de page : la page lit l'heure de la dernière exécution réussie de `publier.yml` via l'API GitHub (sans republier le site) ; date de publication en secours. Vérification du 28/11 : les 17 apps sont à jour. |
 | 2026-11-22 | 1.10 | SolidCraft ajoutée (dépôt `tangency-labs/solidcraft`) ; `build.py` accepte un dépôt « propriétaire/nom ». |
 | 2026-11-22 | 1.9 | Craft Anything ajoutée (`apps.json`). |
 | 2026-11-20 | 1.8 | TextureCraft et MaterialCraft ajoutées (`apps.json`). |
